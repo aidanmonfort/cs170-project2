@@ -1,6 +1,7 @@
-from classifier import Classifier
+from validator import validate
 
 def main():
-    pass
+    accuracy = validate("../large-test-dataset.txt", {1, 15, 27})
+    print(accuracy)
 
 main()
