@@ -1,0 +1,65 @@
+class Parser:
+    def __init__(self, file=None):
+        self.file = file
+
+    def translate(self, line):
+        features = []
+
+        label = int(float(line[0]))
+
+        for f in line[1:]:
+            features.append(float(f))
+        return label, features
+
+    def get_all(self):
+        if self.file is None:
+            print("No file data to parse")
+            return 
+
+        instances = []
+        with open(self.file, "r") as data:
+            lines = data.readlines()
+
+            for line in lines:
+                line = line.strip().split()
+
+                instances.append(self.translate(line))
+
+        return instances
+
+    def get_subset(self, subset):
+        if self.file is None:
+            print("No file data to parse")
+            return 
+
+        instances = []
+        with open(self.file, "r") as data:
+            lines = data.readlines()
+
+            for id in subset:
+                line = lines[id].strip().split()
+
+                instances.append(self.translate(line))
+
+        return instances
+
+    def get_by_id(self, id):
+        if self.file is None:
+            print("No file data to parse")
+            return 
+
+        lines = []
+        with open(self.file, "r") as data:
+            lines = data.readlines()
+
+        return self.translate(lines[id].strip().split())
+
+
+
+test = Parser("../small-test-dataset.txt")
+print(test.get_all())
+
+
+
+
+
