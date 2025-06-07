@@ -1,5 +1,16 @@
-from classifier import Classifier
 from validator import validate
+from graphing import graph_subset
+
+def get_stats(dataset):
+    instance_count = 0
+    feature_count = 0
+    with open(dataset, "r") as data:
+        instances = data.readlines()
+        instance_count = len(instances)
+
+        feature_count = len(instances[0].strip().split()) - 1
+
+    return instance_count, feature_count
 
 def eval(dataset, feature_set):
     return validate(dataset, feature_set)
@@ -43,6 +54,8 @@ def forward_selection(dataset, feature_count):
 
     print(f"Search finished! The best subset of features is {{ {','.join(str(f) for f in feature_set)} }},",
           f"which has an accuracy of {current_accuracy: .3f}%")
+    
+    return feature_set
 
 
 
@@ -80,13 +93,12 @@ def backward_elimination(dataset, feature_count):
 
     print(f"Search finished! The best subset of features is {{ {','.join(str(f) for f in start_features)} }},",
           f"which has an accuracy of {current_accuracy: .3f}%")
+    
+    return start_features
 
 def main():
     print("Welcome to Aidan Monfort and Shaun Mansoor", 
           "Feature Selection Algorithm.")
-    
-    print("Please enter total number of features:", end='')
-    feature_count = int(input())
 
     print("Type the number of the algorithm you want to run.")
 
@@ -94,11 +106,21 @@ def main():
           "[2] Backward Elimination\n", sep='')
 
     algo_choice = int(input())
+    dataset = "../small-test-dataset.txt"
+    instances_c, feature_count = get_stats(dataset)
 
-    if algo_choice == 1:
-        forward_selection(r"C:\Users\User\cs170-project2\titanic clean.txt", feature_count)
-    else:
-        backward_elimination(r"C:\Users\User\cs170-project2\titanic clean.txt",feature_count)
+    print(f"Dataset has {instances_c} instances and {feature_count} features")
+
+    selected_features = [3, 5, 7]
+
+    # if algo_choice == 1:
+    #     selected_features = forward_selection(dataset, feature_count)
+    # else:
+    #     selected_features = backward_elimination(dataset,feature_count)
+
+    graph_subset(dataset, selected_features)
+
+
 
 
 main()

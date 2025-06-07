@@ -48,8 +48,8 @@ class Classifier:
         test_features = test_features/self.feature_std
 
         _, nn_class, nn_id = min((euclid_dist(test_features, 
-                                            feature_vec), self.labels[id], id) 
-                               for id, feature_vec in enumerate(self.feature_vectors))
+                                            feature_vec), self.labels[idx], idx) 
+                               for idx, feature_vec in enumerate(self.feature_vectors))
 
         return nn_class, nn_id
 
@@ -69,7 +69,7 @@ class Classifier:
         #creates tuple list of distance, label, and ids and then uses min function to 
         #return the one with the shortest distance
         _, nn_class, nn_id = min((euclid_dist(features, 
-                                            feature_vec), self.labels[id], id) 
-                               for id, feature_vec in enumerate(self.feature_vectors))
+                                            feature_vec), self.labels[idx], idx) 
+                               for idx, feature_vec in enumerate(self.feature_vectors))
 
         return nn_class, nn_id

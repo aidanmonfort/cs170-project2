@@ -30,9 +30,9 @@ class Classifier:
         self.feature_list = feature_list
         self.labels, self.feature_vectors = self.loader.get_subset(ids, feature_list)
 
-        self.feature_means, self.feature_std = self.meanstd() 
-        self.feature_vectors = self.feature_vectors - self.feature_means 
-        self.feature_vectors = self.feature_vectors/self.feature_std
+        # self.feature_means, self.feature_std = self.meanstd() 
+        # self.feature_vectors = self.feature_vectors - self.feature_means 
+        # self.feature_vectors = self.feature_vectors/self.feature_std
 
     #tests a specific instance id
     def test_by_id(self, id):
@@ -44,32 +44,32 @@ class Classifier:
         
         _, test_features = self.loader.get_by_id(id, self.feature_list)
         # Use stored training statistics for normalization
-        test_features = test_features - self.feature_means 
-        test_features = test_features/self.feature_std
+        # test_features = test_features - self.feature_means 
+        # test_features = test_features/self.feature_std
 
+        # Use the enumeration index only for the feature vectors, not for labels
         _, nn_class, nn_id = min((euclid_dist(test_features, 
-                                            feature_vec), self.labels[id], id) 
-                               for id, feature_vec in enumerate(self.feature_vectors))
+                                            feature_vec), label, idx) 
+                               for idx, (label, feature_vec) in enumerate(zip(self.labels, self.feature_vectors)))
 
         return nn_class, nn_id
 
-    #tests a specific instance id
+    #tests a specific feature vector
     def test_by_data(self, features):
-
         def euclid_dist(first, second):
             #super clean python one liner
             return math.sqrt(sum((d1 - d2)**2 for d1, d2 in zip(first, second)))
 
         
         # Use stored training statistics for normalization
-        features = features - self.feature_means
-        features = features/self.feature_std
+        # features = features - self.feature_means
+        # features = features/self.feature_std
         
         #another super nice one liner
         #creates tuple list of distance, label, and ids and then uses min function to 
         #return the one with the shortest distance
         _, nn_class, nn_id = min((euclid_dist(features, 
-                                            feature_vec), self.labels[id], id) 
-                               for id, feature_vec in enumerate(self.feature_vectors))
+                                            feature_vec), self.labels[idx], idx) 
+                               for idx, feature_vec in enumerate(self.feature_vectors))
 
         return nn_class, nn_id
