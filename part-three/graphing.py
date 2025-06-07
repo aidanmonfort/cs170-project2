@@ -70,3 +70,18 @@ def graph_subset(dataset, feature_subset):
     check.on_clicked(func)
     plt.ioff()  # Turn off interactive mode to make plt.show() blocking
     plt.show()
+
+def plot_class_distribution(dataset): 
+    parser = Parser(dataset)
+    labels, _ = parser.get_all()
+    
+    plt.figure()
+    unique, counts = np.unique(labels, return_counts=True)
+    plt.bar([f'Class {label}' for label in unique], counts)
+    plt.title('Distribution of Classes')
+    plt.xlabel('Class')
+    plt.ylabel('Count')
+    for i, count in enumerate(counts):
+        plt.text(i, count, str(count), ha='center', va='bottom')
+    plt.show()
+

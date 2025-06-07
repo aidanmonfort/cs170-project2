@@ -15,7 +15,7 @@ class Parser:
 
         #defaults to all features
         if selected_features is None:
-            selected_features = list(range(1, len(line)))
+            selected_features = range(1, len(line))
 
         #grabs columns from selected features and converts to floats
         for f in selected_features:
@@ -36,9 +36,9 @@ class Parser:
             for line in lines:
                 line = line.strip().split()#take newline off and split by spaces
                 
-                label, features = self.translate(line, features)
+                label, feature_vec = self.translate(line, features)
                 label_array.append(label)
-                feature_array.append(features)
+                feature_array.append(feature_vec)
 
         return np.array(label_array), np.array(feature_array)
 
@@ -85,6 +85,15 @@ class Parser:
             lines = data.readlines()
 
         return len(lines) if lines else 0
+    
+    def get_norms(self, feature_list=None):
+        if self.file is None:
+            print("No file data to parse")
+            return []
+        
+        _, features = self.get_all(feature_list)
+        # get mean and std along columns
+        return features.mean(axis=0), features.std(axis=0)
 
 
 

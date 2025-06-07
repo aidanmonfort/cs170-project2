@@ -1,5 +1,5 @@
 from validator import validate
-from graphing import graph_subset
+from graphing import graph_subset, plot_class_distribution
 
 def get_stats(dataset):
     instance_count = 0
@@ -12,13 +12,13 @@ def get_stats(dataset):
 
     return instance_count, feature_count
 
-def eval(dataset, feature_set):
-    return validate(dataset, feature_set)
+def eval(dataset, feature_set, k):
+    return validate(dataset, feature_set, k)
 
-def forward_selection(dataset, feature_count):
+def forward_selection(dataset, feature_count, k):
     feature_set = []
     possible_features = set(range(1, feature_count + 1))
-    current_accuracy = eval(dataset, feature_set)
+    current_accuracy = eval(dataset, feature_set, k)
 
     print("Using no features and “random” evaluation, I get an accuracy of:", f"{current_accuracy: .3f}%")
 
@@ -31,7 +31,7 @@ def forward_selection(dataset, feature_count):
         next_take = []
         for pf in possible_features:
             new_subset = feature_set + [pf]  # don't mutate in place
-            accuracy = validate(dataset, new_subset)
+            accuracy = validate(dataset, new_subset, k)
             next_take.append((accuracy, new_subset))
 
         
@@ -59,9 +59,9 @@ def forward_selection(dataset, feature_count):
 
 
 
-def backward_elimination(dataset, feature_count):
+def backward_elimination(dataset, feature_count, k):
     start_features = set(range(1, feature_count + 1))
-    current_accuracy = validate(dataset, start_features)
+    current_accuracy = validate(dataset, start_features, k)
 
     print("Using all features and “random” evaluation, I get an accuracy of:", f"{current_accuracy: .3f}%")
 
@@ -73,7 +73,7 @@ def backward_elimination(dataset, feature_count):
         possible_removes = []
         for feature in start_features:
             new_subset = start_features - {feature}
-            accuracy = validate(dataset, new_subset)
+            accuracy = validate(dataset, new_subset, k)
             possible_removes.append((accuracy, new_subset))
 
         for accuracy, subset in possible_removes:
@@ -108,17 +108,22 @@ def main():
     algo_choice = int(input())
     dataset = "../small-test-dataset.txt"
     instances_c, feature_count = get_stats(dataset)
+    k_values = [1, 3, 5, 7]
 
     print(f"Dataset has {instances_c} instances and {feature_count} features")
 
-    selected_features = [3, 5, 7]
+    for k in k_values:
+        print(f"Testing for k = {k}")
+        selected_features = None
 
-    # if algo_choice == 1:
-    #     selected_features = forward_selection(dataset, feature_count)
-    # else:
-    #     selected_features = backward_elimination(dataset,feature_count)
+        if algo_choice == 1:
+            selected_features = forward_selection(dataset, feature_count, k)
+        else:
+            selected_features = backward_elimination(dataset,feature_count, k)
 
-    graph_subset(dataset, selected_features)
+        graph_subset(dataset, selected_features)
+
+    plot_class_distribution(dataset)
 
 
 
