@@ -11,21 +11,17 @@ def graph_subset(dataset, feature_subset):
     parser = Parser(dataset)
     features_to_plot = list(feature_subset)
     
-    all_instances = range(parser.get_size())
-    labels = []
+    labels, features = parser.get_all()
     x_coords = []
     y_coords = []
     z_coords = []
     
-    for instance in all_instances:
-        label, features = parser.get_by_id(instance, features_to_plot)
-        labels.append(label)
+    for label, features in zip(labels, features):
         x_coords.append(features[0])
         y_coords.append(features[1])
         if len(feature_subset) >= 3:
             z_coords.append(features[2])
     
-    labels = np.array(labels)
     x_coords = np.array(x_coords)
     y_coords = np.array(y_coords)
     z_coords = np.array(z_coords)
@@ -85,3 +81,4 @@ def plot_class_distribution(dataset):
         plt.text(i, count, str(count), ha='center', va='bottom')
     plt.show()
 
+plot_class_distribution("../large-test-dataset.txt")

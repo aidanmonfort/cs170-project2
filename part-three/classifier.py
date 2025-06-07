@@ -48,7 +48,7 @@ class Classifier:
     def test_by_id(self, id, k=1):
         # if no features selected, return the most common class
         if not self.feature_list:
-            return self.most_common_class, 0
+            return self.most_common_class
             
         def euclid_dist(first, second):
             #super clean python one liner
@@ -73,7 +73,7 @@ class Classifier:
     def test_by_data(self, features, k=1):
         # if no features selected, return the most common class
         if not self.feature_list:
-            return self.most_common_class, 0
+            return self.most_common_class
             
         def euclid_dist(first, second):
             #super clean python one liner

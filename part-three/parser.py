@@ -1,6 +1,5 @@
 import numpy as np
 
-
 class Parser:
     #parser class to handle grabbing data from a file and returning instances
     def __init__(self, file=None):
