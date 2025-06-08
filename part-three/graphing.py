@@ -74,11 +74,15 @@ def plot_class_distribution(dataset):
     plt.figure()
     unique, counts = np.unique(labels, return_counts=True)
     plt.bar([f'Class {label}' for label in unique], counts)
-    plt.title('Distribution of Classes')
+    plt.title(dataset[3:])
     plt.xlabel('Class')
     plt.ylabel('Count')
     for i, count in enumerate(counts):
         plt.text(i, count, str(count), ha='center', va='bottom')
     plt.show()
 
+plot_class_distribution("../small-test-dataset.txt")
 plot_class_distribution("../large-test-dataset.txt")
+plot_class_distribution("../titanic-dataset.txt")
+# graph_subset("../small-test-dataset.txt", [3, 5, 7])
+# graph_subset("../small-test-dataset.txt", [1, 2, 4])

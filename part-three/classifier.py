@@ -39,7 +39,7 @@ class Classifier:
             self.most_common_class = Counter(self.labels).most_common(1)[0][0]
             return
             
-        #changed normalization to grab the entire list
+        #changed normalization to grab the means for features in the subset
         self.feature_means, self.feature_std = self.loader.get_norms(feature_list)
         self.feature_vectors = self.feature_vectors - self.feature_means 
         self.feature_vectors = self.feature_vectors/self.feature_std

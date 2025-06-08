@@ -1,5 +1,6 @@
 from validator import validate
 from graphing import graph_subset, plot_class_distribution
+import time
 
 def get_stats(dataset):
     instance_count = 0
@@ -110,7 +111,7 @@ def main():
     print("Welcome to Aidan Monfort and Shaun Mansoor", 
           "Feature Selection Algorithm.")
 
-    dataset_set = ["../small-test-dataset.txt"]
+    dataset_set = ["../titanic-dataset.txt"]
     k_values = [1, 3, 5, 7]
 
 
@@ -118,16 +119,20 @@ def main():
         instances_c, feature_count = get_stats(dataset)
         print(f"Testing for dataset {dataset[3::]}, with {instances_c} instances and {feature_count} features")
         for k in k_values:
+            time_start = time.time()
             print(f"\nTesting for k = {k}")
             selected_features = None
 
-            selected_features, accuracy = forward_selection(dataset, feature_count, k)
+            selected_features, accuracy = forward_selection(dataset, feature_count, k, False)
             print(f"\nForward Selection gave feature set {selected_features} with accuracy {accuracy:.3f}")
 
-            graph_subset(dataset, selected_features)
+            # graph_subset(dataset, selected_features)
 
-            selected_features, accuracy = backward_elimination(dataset,feature_count, k)
-            print(f"Backward Elimination gave feature set {selected_features} with accuracy {accuracy:.3f}")
+            selected_features, accuracy = backward_elimination(dataset,feature_count, k, False)
+            print(f"Backward Elimination gave feature set {list(selected_features)} with accuracy {accuracy:.3f}")
+
+            time_end = time.time()
+            print(f"Time taken: {time_end - time_start:.2f} seconds")
 
     plot_class_distribution(dataset)
 
